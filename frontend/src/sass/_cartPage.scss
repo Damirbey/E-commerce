@@ -1,0 +1,80 @@
+.cart{
+    grid-column: center-start / center-end;
+    & > h1{
+        font-weight: bold;
+        margin-top: 1rem;
+    }
+    margin: 1rem;
+}
+
+.cartScreen{
+    display: flex;
+    flex-wrap: wrap;
+    gap:2rem;
+    &_cartItems{
+        flex: 1 1 60%;
+        &_cartItem{
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border:1px solid $color-grey-light-4;
+            border-radius: 0.5rem;
+            font-size:1.6rem;
+            display: grid;
+            grid-template-columns: 2fr repeat(3,1fr);
+            grid-column-gap: 1rem;
+            justify-items: flex-start;
+            align-items: center;
+            height: 7rem;
+            &_imageSection{
+                display: flex;
+                align-items: center;
+                gap:0.5rem;
+            }
+            &_img{
+                height:6rem;
+                padding:0.5rem;
+                border:1px solid $color-grey-light-3;
+            }
+            &_title{
+               color:blue;
+               cursor: pointer;
+               text-decoration: underline;
+            }
+            &_quantity{
+                display: flex;
+                gap:1rem;
+        
+            }
+            &_button{
+                width: 2.5rem;
+                height: 2.5rem;
+                cursor: pointer;
+                transition: all .2s;
+                    &:active{
+                        transform: translateY(1px);
+                        fill:$color-grey-dark-2;
+                    }
+            }
+
+        }
+    }
+
+    &_total{
+        border:1px solid $color-grey-light-4;
+        border-radius: 0.5rem;
+        max-height: 18rem;
+        padding: 1rem;
+        font-size: 2.6rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        &_proceed{
+            border-top: 2px solid $color-grey-light-4;
+            padding-top: 1rem;
+        }
+      
+    }
+}
+.disabled{
+    fill:$color-grey-light-4;
+}

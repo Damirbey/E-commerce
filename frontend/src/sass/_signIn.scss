@@ -1,0 +1,37 @@
+.signIn{
+    grid-column: center-start / center-end;
+    margin:5rem auto;
+    text-align: left;
+    width: 50%;
+    @media only screen and(max-width:$bp-small){
+        width: 80%;
+    }
+}
+
+.form{
+    font-size: 2rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap:1.5rem;
+
+    &_input{
+        padding:1.5rem 2rem;
+        border: 1px solid $color-grey-light-4;
+        border-radius: 1rem;
+        font-size: 1.6rem;
+        cursor: pointer;
+        &:focus{
+            background-color: rgb(213, 234, 241);
+        }
+    }
+    &_btn{
+        align-self: flex-start;
+    }
+    &_link a{
+        color:rgb(11, 11, 248);
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}

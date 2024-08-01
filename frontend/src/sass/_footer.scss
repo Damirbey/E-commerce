@@ -1,0 +1,36 @@
+.footer{
+    grid-column: full-start / full-end;
+    grid-row: 3/3;
+    background-color: $main-theme-color;
+    font-size: 1.8rem;
+    padding: 6rem;
+    &_nav{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        justify-items: center;
+        &_item{
+            list-style: none;
+        }
+        &_link{
+            font-family: $font-display;
+            &:visited,
+            &:link{
+                
+                text-decoration: none;
+                text-transform: uppercase;
+                text-align: center;
+                display: block;
+                color:#fff;
+                padding: 1.5rem;
+                cursor: pointer;
+                transition: all .2s;
+            }
+            &:hover,
+            &:active{
+                background-color: rgba(#fff,.05);
+                transform: translateY(-3px);
+            }
+
+        }
+    }
+}

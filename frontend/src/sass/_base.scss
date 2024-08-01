@@ -1,0 +1,63 @@
+//COLORS
+
+$main-theme-color:#131921;
+$main-btn-color:#ffd814;
+$main-btn-color-dark:#fcd200;
+$main-btn-color-dark-1:#febd69;
+$color-grey-light-1: #faf9f9;
+$color-grey-light-2: #f4f2f2;
+$color-grey-light-3: #f0eeee;
+$color-grey-light-4: #ccc;
+
+$color-grey-dark-1: #333;
+$color-grey-dark-2: #777;
+$color-grey-dark-3: #999;
+// FONT VARIABLES
+$font-primary: 'Nunito', sans-serif;
+$font-display: 'Josefin Sans', sans-serif;
+
+// SCREEN VARIABLES
+$bp-largest:75em; //1200px
+$bp-large:62.5em; //1000px
+$bp-medium:50em; //800px
+$bp-small:37.5em; //600px
+
+*,
+*::before,
+*::after{
+    margin:0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html{
+    font-size: 62.5%; //1rem = 10px;
+    box-sizing: border-box;
+    @media only screen and(max-width:$bp-largest){
+        font-size:50%;
+    }
+    @media only screen and(max-width:$bp-small){
+        font-size:40%;
+    }
+}
+body{
+    line-height: 1.6;
+    font-family: $font-primary;
+    font-weight: 400;
+}
+a:link,
+a:visited{
+    color:#fff;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+#root{
+    display: grid;
+    grid-template-columns: [full-start] minmax(3rem, 1fr) [center-start] repeat(8, [col-start] minmax(min-content,14rem) [col-end]) [center-end] minmax(3rem, 1fr) [full-end];
+    grid-template-rows: 6rem 100% min-content;
+
+    @media only screen and(max-width:$bp-small){
+        grid-template-rows: repeat(3, min-content);
+    }
+}
