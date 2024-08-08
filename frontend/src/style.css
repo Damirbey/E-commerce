@@ -28,8 +28,8 @@ body {
   font-weight: 400;
 }
 
-input:focus, textarea:focus, select:focus {
-  -webkit-text-size-adjust: 100%;
+input:focus, textarea:focus, select:focus, input {
+  font-size: 16px;
 }
 
 a:link,
