@@ -11,6 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "use-reducer-logger": "^1.0.2"
+    "use-reducer-logger": "^1.0.0"
   }
 }
