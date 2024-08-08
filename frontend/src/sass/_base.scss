@@ -29,14 +29,15 @@ $bp-small:37.5em; //600px
     padding: 0;
     box-sizing: inherit;
 }
-
+  
 html{
     font-size: 62.5%; //1rem = 10px;
+    -webkit-text-size-adjust: 100%; /* Prevents font size adjustments after orientation changes */
     box-sizing: border-box;
-    @media only screen and(max-width:$bp-largest){
+    @media only screen and (max-width:$bp-largest){
         font-size:50%;
     }
-    @media only screen and(max-width:$bp-small){
+    @media only screen and (max-width:$bp-small){
         font-size:40%;
     }
 }
@@ -44,6 +45,9 @@ body{
     line-height: 1.6;
     font-family: $font-primary;
     font-weight: 400;
+}
+input:focus, textarea:focus, select:focus {
+    -webkit-text-size-adjust: 100%;
 }
 a:link,
 a:visited{
@@ -57,7 +61,7 @@ a:visited{
     grid-template-columns: [full-start] minmax(3rem, 1fr) [center-start] repeat(8, [col-start] minmax(min-content,14rem) [col-end]) [center-end] minmax(3rem, 1fr) [full-end];
     grid-template-rows: 6rem 100% min-content;
 
-    @media only screen and(max-width:$bp-small){
+    @media only screen and (max-width:$bp-small){
         grid-template-rows: repeat(3, min-content);
     }
 }

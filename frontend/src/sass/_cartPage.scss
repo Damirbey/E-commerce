@@ -1,10 +1,11 @@
 .cart{
     grid-column: center-start / center-end;
+    margin: 1rem;
+
     & > h1{
         font-weight: bold;
         margin-top: 1rem;
     }
-    margin: 1rem;
 }
 
 .cartScreen{
