@@ -59,7 +59,9 @@ function ProductRating(props){
                         <use xlinkHref="/images/sprite.svg#icon-star-full"></use>
                     }
                 </svg>
-                <p className="product_card_details_reviews_numReviews">{numOfReviews} Reviews</p>
+                {numOfReviews &&
+                    <p className="product_card_details_reviews_numReviews">{numOfReviews} Reviews</p>
+                }
         </React.Fragment>
 }
 

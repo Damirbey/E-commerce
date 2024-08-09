@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useEffect, useState } from "react";
 import { Store } from "../Store";
 import { FaBars, FaTimes, FaSearch } from "react-icons/fa";
 import { RiLoginBoxLine } from "react-icons/ri";
 import { RiExpandRightFill } from "react-icons/ri";
-
+import {toast} from 'react-toastify';
+import { getError } from "../utils";
+import axios from "axios";
 
 function Navigation(){
     const outerModal = useRef();
@@ -14,6 +16,8 @@ function Navigation(){
     const {state, dispatch:ctxDispatch} = useContext(Store);
     const {userInfo} = state;
     const {cartItems} = state.cart;
+    const [categories, setCategories] = useState([]);
+    const [query,setQuery] = useState('');
     const navigate = useNavigate();
     let navContent;
     let cart = <Link to="/cart">
@@ -57,6 +61,29 @@ function Navigation(){
         navigate(page);
         toggleUserNav();
     }
+
+    const onCategoryHandler = (category)=>{
+        navigate(`/search?category=${category}`);
+        toggleCategoryMenu();
+    }
+
+    const onSubmitHandler = (e)=>{
+        e.preventDefault();
+        navigate(query ? `/search?query=${query}` : '/search');
+    }
+
+    useEffect(()=>{
+        const fetchCategories = async()=>{
+            try{
+                const {data} = await axios.get('/api/getProducts/categories');
+                setCategories(data);
+            }catch(error){
+                toast.error(getError(error));
+            }
+        }
+        fetchCategories();
+        
+    },[categories])
 
     if(!userInfo){
         navContent = <React.Fragment>
@@ -123,7 +150,7 @@ function Navigation(){
             <Link to="/"><h1 className="heading-1 logo_title">Amazona</h1></Link>
         </div>
 
-        <form className="search">
+        <form className="search" onSubmit={onSubmitHandler}>
             <input type="text" className="search_input" />
             <button className="search_btn">
                 <FaSearch className="search_btn_logo"/>
@@ -137,15 +164,12 @@ function Navigation(){
     
         <div className="category_menu" ref={categoryMenu}>
             <FaTimes className="category_menu_btn" onClick={toggleCategoryMenu}/>
-            <div className="category_menu_item">
-                Shirts
-            </div>
-            <div className="category_menu_item">
-                Pants
-            </div>
-            <div className="category_menu_item">
-                Shoes
-            </div>
+            {categories.map((category)=>(
+                <div className="category_menu_item" onClick={()=>onCategoryHandler(category)}>
+                    {category}
+                </div>
+            ))}
+            
         </div>
 
     </header>

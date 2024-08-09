@@ -15,6 +15,7 @@ import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
 import UserProfilePage from './pages/UserProfilePage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
+import SearchPage from './pages/SearchPage';
 
 function App() {
   const outerModal = useRef();
@@ -36,6 +37,7 @@ function App() {
           <Route path="/userProfile" element={<UserProfilePage/>}/>
           <Route path="/order/:id" element={<OrderPage/>}/>
           <Route path="/orderHistory" element={<OrderHistoryPage/>}/>
+          <Route path="/search" element={<SearchPage/>}/>
         </Routes>
       <Footer/>
     </BrowserRouter>
