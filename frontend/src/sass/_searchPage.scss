@@ -19,11 +19,16 @@
         }
         &_item{
             font-size: 1.6rem;
-            & > ul li{
+            & > ul li {
                 margin: 1rem;
                 text-decoration: underline;
-                color:rgb(11, 11, 248);
                 cursor: pointer;
+            }
+            & > ul li a{
+                color:rgb(11, 11, 248);
+                &:target{
+                    font-weight: bold;
+                }
             }
         }
     }
