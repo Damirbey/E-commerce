@@ -1,11 +1,15 @@
 .searchPage{
-    grid-column: center-start/center-end;
-    margin:2rem 0;
+    grid-column: full-start/full-end;
+    margin:2rem auto;
+    grid-row: 2/3;
     display: grid;
-    grid-template-columns: minmax(3rem, max-content) minmax(45rem, max-content) minmax(3rem,max-content);
+    grid-template-columns: minmax(3rem, max-content) minmax(80rem, max-content) minmax(3rem,max-content);
     grid-gap: 5rem;
     @media only screen and (max-width: $bp-largest) {
+        grid-column: center-start/center-end;
         grid-template-columns: 1fr;
+        margin:2rem 0;
+
     }
 
     &_leftSection{
@@ -33,9 +37,10 @@
         }
     }
     &_middleSection{
+        display: flex;
+        flex-direction: column;
         &_results{
             margin:1rem 0;
-            
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
             grid-gap:2rem;

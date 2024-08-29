@@ -205,3 +205,30 @@
     }
 
 }
+
+/****Styling Pagination Button*****/
+.paginationBttns {
+    margin: 2.5rem;
+    width: 100px;
+    height: 40px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+}
+.paginationBttns a {
+    padding: 10px;
+    margin: 8px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    color: #000000 !important;
+    cursor: pointer;
+}
+.paginationBttns a:hover {
+    color: #ffffff !important;
+    background-color: $main-btn-color;
+}
+.paginationActive a {
+    color: #ffffff !important;
+    background-color: $main-btn-color;
+}

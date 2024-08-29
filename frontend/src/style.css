@@ -626,6 +626,36 @@ a:visited {
   border-bottom: 3px solid #f08000;
 }
 
+/****Styling Pagination Button*****/
+.paginationBttns {
+  margin: 2.5rem;
+  width: 100px;
+  height: 40px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
+.paginationBttns a {
+  padding: 10px;
+  margin: 8px;
+  border-radius: 5px;
+  border: 1px solid #000;
+  color: #000000 !important;
+  cursor: pointer;
+}
+
+.paginationBttns a:hover {
+  color: #ffffff !important;
+  background-color: #ffd814;
+}
+
+.paginationActive a {
+  color: #ffffff !important;
+  background-color: #ffd814;
+}
+
 .product-screen {
   grid-column: center-start/center-end;
   padding: 2rem;
@@ -986,15 +1016,18 @@ tr:hover {
   }
 }
 .searchPage {
-  grid-column: center-start/center-end;
-  margin: 2rem 0;
+  grid-column: full-start/full-end;
+  margin: 2rem auto;
+  grid-row: 2/3;
   display: grid;
-  grid-template-columns: minmax(3rem, max-content) minmax(45rem, max-content) minmax(3rem, max-content);
+  grid-template-columns: minmax(3rem, max-content) minmax(80rem, max-content) minmax(3rem, max-content);
   grid-gap: 5rem;
 }
 @media only screen and (max-width: 75em) {
   .searchPage {
+    grid-column: center-start/center-end;
     grid-template-columns: 1fr;
+    margin: 2rem 0;
   }
 }
 .searchPage_leftSection {
@@ -1022,6 +1055,10 @@ tr:hover {
 }
 .searchPage_leftSection_item > ul li a:target {
   font-weight: bold;
+}
+.searchPage_middleSection {
+  display: flex;
+  flex-direction: column;
 }
 .searchPage_middleSection_results {
   margin: 1rem 0;

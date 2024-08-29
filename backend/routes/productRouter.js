@@ -14,8 +14,6 @@ productRouter.get(
   '/search',
   expressAsyncHandler(async (req, res) => {
     const { query } = req;
-    const pageSize = query.pageSize || PAGE_SIZE;
-    const page = query.page || 1;
     const category = query.category || '';
     const price = query.price || '';
     const rating = query.rating || '';
@@ -69,8 +67,6 @@ productRouter.get(
       ...ratingFilter,
     })
       .sort(sortOrder)
-      .skip(pageSize * (page - 1))
-      .limit(pageSize);
 
     const countProducts = await Product.countDocuments({
       ...queryFilter,
@@ -80,9 +76,7 @@ productRouter.get(
     });
     res.send({
       products,
-      countProducts,
-      page,
-      pages: Math.ceil(countProducts / pageSize),
+      countProducts
     });
   })
 );

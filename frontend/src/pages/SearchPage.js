@@ -1,14 +1,12 @@
 import React, { useEffect, useReducer, useState } from "react";
 import ProductRating from "../components/ProductRating";
 import ProductCard from "../components/ProductCard";
-import data from "../data.js";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getError } from "../utils.js";
 import axios from "axios";
-import LinkContainer from 'react-router-bootstrap/LinkContainer';
-import Button from 'react-bootstrap/Button';
 import Spinner from "../components/Spinner.js";
+import ReactPaginate from 'react-paginate';
 
 const prices = [
     {
@@ -53,8 +51,6 @@ const reducer = (state, action) => {
         return {
           ...state,
           products: action.payload.products || [],
-          page: action.payload.page,
-          pages: action.payload.pages,
           countProducts: action.payload.countProducts,
           loading: false,
         };
@@ -76,17 +72,30 @@ function SearchPage(){
     const order = searchParameter.get('order') || 'newest';
     const page = searchParameter.get('page') || 1;
     const [categories,setCategories] = useState([]);
-    const [{loading,error, products, pages, countProducts}, dispatch] = useReducer(reducer,{
+    const [{loading,error, products, countProducts}, dispatch] = useReducer(reducer,{
         loading:true,
         products:[],
         error:''
     });
+    const [pageNumber, setPageNumber] = useState('');
+    //IMPLEMENTING PAGINATION
 
+    const productsPerPage = 4;
+    const pagesVisited = pageNumber * productsPerPage;
+    const displayProducts = products.slice(
+        pagesVisited,
+        productsPerPage + pagesVisited
+    );
+    const pageCount = Math.ceil(products.length / productsPerPage);
+    const changePage = ({ selected }) => {
+        setPageNumber(selected);
+    };
+    console.log("pag",pageCount)
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const { data } = await axios.get(
-                `/api/getProducts/search?page=${page}&query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}`
+                `/api/getProducts/search?query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}`
                 );
                 dispatch({ type: 'FETCH_SUCCESS', payload: data });
             } catch (err) {
@@ -112,7 +121,6 @@ function SearchPage(){
     }, [dispatch]);
 
     const getFilterUrl = (filter) => {
-        const filterPage = filter.page || page;
         const filterCategory = encodeURIComponent(filter.category || category);
         const filterQuery = encodeURIComponent(filter.query || query);
         const filterRating = encodeURIComponent(filter.rating || rating);
@@ -121,21 +129,21 @@ function SearchPage(){
     
         return {
             pathname: "/search",
-            search: `?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`
+            search: `?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}`
         };
     };
-    console.log("product srae", products)
+
     return(<div className="searchPage">
         <div className="searchPage_leftSection">
             <div className="searchPage_leftSection_item">
                 <h3 className="heading-3 bold-text">Categories</h3>
                 <ul>
-                    <li>
+                    <li className={category === 'all' && 'active'}>
                         <Link to={getFilterUrl({category:'all'})}>Any</Link>
                     </li>
                     {
                         categories.map((c)=>(
-                            <li>
+                            <li className={category === c && 'active'}>
                                 <Link to={getFilterUrl({category:c})}>{c}</Link>
                             </li>
                         ))
@@ -146,13 +154,13 @@ function SearchPage(){
             <div className="searchPage_leftSection_item">
                 <h3 className="heading-3 bold-text">Price</h3>
                 <ul>
-                    <li>
+                    <li className={price === 'all' && 'active'}> 
                         <Link to={getFilterUrl({price:'all'})}>Any</Link>
                     </li>
                     {
-                        prices.map(price=>(
-                            <li>
-                                <Link to={getFilterUrl({price:price.value})}>{price.name}</Link>
+                        prices.map((p,i)=>(
+                            <li className={price === p.value && 'active'} key={i}>
+                                <Link to={getFilterUrl({price:p.value})}>{p.name}</Link>
                             </li>
                         ))
                     }
@@ -162,14 +170,14 @@ function SearchPage(){
             <div className="searchPage_leftSection_item">
                 <h3 className="heading-3 bold-text">Average Customer Review</h3>
                 <ul>
-                    <li>
+                    <li className={rating === 'all' && 'active'}>
                         <Link to={getFilterUrl({rating:'all'})}>Any</Link>
                     </li>
                     {
-                        ratings.map(rating=>(
-                            <li>
-                                <Link to={getFilterUrl({rating:rating.rating})}>
-                                    <ProductRating rating={rating.rating}/>& up
+                        ratings.map(r=>(
+                            <li className={rating == r.rating && 'active'}>
+                                <Link to={getFilterUrl({rating:r.rating})}>
+                                    <ProductRating rating={r.rating}/>& up
                                 </Link>
                             </li>
                         ))
@@ -193,32 +201,27 @@ function SearchPage(){
                     (
                     <React.Fragment>
                     
-                        {  products.length > 0 && products.map((product,i)=>(
-                            <ProductCard product={product}/>
+                        {  displayProducts.length > 0 && displayProducts.map((product,i)=>(
+                            <ProductCard key={i} product={product}/>
                         ))
                         }
-                        <div>
-                            {[...Array(pages).keys()].map((pageNumber) => (
-                                <LinkContainer
-                                key={pageNumber + 1}
-                                className="mx-1"
-                                to={getFilterUrl({ page: pageNumber + 1 })}
-                                >
-                                <Button
-                                    className={Number(page) === pageNumber + 1 ? 'text-bold' : ''}
-                                    variant="light"
-                                >
-                                    {pageNumber + 1}
-                                </Button>
-                                </LinkContainer>
-                            ))}
-                        </div>
+
+                        
                     </React.Fragment>
                     )
                 }
-                
-                
-             </div>
+            </div>
+            <ReactPaginate
+                previousLabel={'Previous'}
+                nextLabel={'Next'}
+                pageCount={pageCount}
+                onPageChange={changePage}
+                containerClassName={'paginationBttns'}
+                previousLinkClassName={'previousBttn'}
+                nextLinkClassName={'nextBttn'}
+                disabledClassName={'paginationDisabled'}
+                activeClassName={'paginationActive'}
+            />
         </div>
 
         <div className="searchPage_rightSection">
