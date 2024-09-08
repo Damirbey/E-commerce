@@ -26,9 +26,6 @@ function OrderHistoryPage(){
     });
 
     useEffect(()=>{
-        if(!userInfo){
-            navigate('/signIn');
-        }
 
         const fetchOrders = async()=>{
             try{

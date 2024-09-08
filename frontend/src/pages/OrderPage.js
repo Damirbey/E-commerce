@@ -94,9 +94,6 @@ function OrderPage(){
                 dispatch({type:'FETCH_FAIL', payload:getError(error)});
             }
         }
-        if(!userInfo){
-            navigate('/signIn');
-        }
         if(!order._id || successPay || (order._id && order._id !== orderId)){
             fetchOrder();
             if (successPay) {

@@ -130,7 +130,7 @@ function Navigation(){
             {userInfo.isAdmin &&
             <div className="userNav_section">    
                 <h3 className="userNav_section_heading">Admin</h3>
-                <div className="userNav_section_item">Dashboard</div>
+                <div className="userNav_section_item" onClick={()=>onClickHandler('/dashboard')}>Dashboard</div>
                 <div className="userNav_section_item">Products</div>
                 <div className="userNav_section_item">Orders</div>
                 <div className="userNav_section_item">Users</div>

@@ -16,7 +16,10 @@ import OrderPage from './pages/OrderPage';
 import UserProfilePage from './pages/UserProfilePage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import SearchPage from './pages/SearchPage';
-
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminDashboardPage from './pages/AdminDashboardPage';
+import AdminRoute from './components/AdminRoute';
+ 
 function App() {
   const outerModal = useRef();
   return (
@@ -31,13 +34,42 @@ function App() {
           <Route path="/cart" element={<CartPage/>}/>
           <Route path="/signIn" element={<SignIn/>}/>
           <Route path="/signUp" element={<SignUp/>}/>
-          <Route path="/shipping" element={<ShippingPage/>}/>
-          <Route path="/payment" element={<PaymentMethodPage/>}/>
-          <Route path="/placeOrder" element={<PlaceOrderPage/>}/>
-          <Route path="/userProfile" element={<UserProfilePage/>}/>
-          <Route path="/order/:id" element={<OrderPage/>}/>
-          <Route path="/orderHistory" element={<OrderHistoryPage/>}/>
+          <Route path="/shipping" element={
+            <ProtectedRoute>
+              <ShippingPage/>
+            </ProtectedRoute>
+          }/>
+          <Route path="/payment" element={
+            <ProtectedRoute>
+              <PaymentMethodPage/>
+            </ProtectedRoute>
+          }/>
+          <Route path="/placeOrder" element={
+            <ProtectedRoute>
+              <PlaceOrderPage/>
+            </ProtectedRoute>
+          }/>
+          <Route path="/userProfile" element={
+            <ProtectedRoute>
+              <UserProfilePage/>
+            </ProtectedRoute>
+          }/>
+          <Route path="/order/:id" element={
+            <ProtectedRoute>
+              <OrderPage/>
+            </ProtectedRoute>
+          }/>
+          <Route path="/orderHistory" element={
+            <ProtectedRoute>
+              <OrderHistoryPage/>
+            </ProtectedRoute>
+          }/>
           <Route path="/search" element={<SearchPage/>}/>
+          <Route path="/dashboard" element={
+            <AdminRoute>
+              <AdminDashboardPage/>
+            </AdminRoute>
+          }/>
         </Routes>
       <Footer/>
     </BrowserRouter>

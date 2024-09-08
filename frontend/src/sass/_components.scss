@@ -225,10 +225,10 @@
     cursor: pointer;
 }
 .paginationBttns a:hover {
-    color: #ffffff !important;
-    background-color: $main-btn-color;
+    color: $main-theme-color !important;
+    background-color: $main-btn-color-dark;
 }
 .paginationActive a {
-    color: #ffffff !important;
+    color: $main-theme-color !important;
     background-color: $main-btn-color;
 }
