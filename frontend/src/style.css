@@ -633,8 +633,7 @@ a:visited {
   height: 40px;
   list-style: none;
   display: flex;
-  justify-content: center;
-  align-self: center;
+  font-size: 1.6rem;
 }
 
 .paginationBttns a {
@@ -952,6 +951,10 @@ a:visited {
   grid-column: center-start/center-end;
   margin: 2rem 0;
 }
+.tabularPage_heading {
+  display: flex;
+  justify-content: space-between;
+}
 
 .table-container {
   width: 100%;
@@ -1118,6 +1121,11 @@ tr:hover {
 .product_list_header > .btn {
   height: 3rem;
   align-self: center;
+}
+
+.editProduct {
+  grid-column: center-start/center-end;
+  margin: 5rem auto;
 }
 
 /*# sourceMappingURL=style.css.map */

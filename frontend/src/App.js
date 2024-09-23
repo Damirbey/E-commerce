@@ -19,7 +19,9 @@ import SearchPage from './pages/SearchPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import AdminRoute from './components/AdminRoute';
- 
+import AdminProductsPage from './pages/AdminProductsPage';
+import AdminProductEditPage from './pages/AdminProductEditPage';
+
 function App() {
   const outerModal = useRef();
   return (
@@ -68,6 +70,16 @@ function App() {
           <Route path="/dashboard" element={
             <AdminRoute>
               <AdminDashboardPage/>
+            </AdminRoute>
+          }/>
+          <Route path="/adminProducts" element={
+            <AdminRoute>
+              <AdminProductsPage/>
+            </AdminRoute>
+          }/>
+          <Route path="/adminProductEdit/:id" element={
+            <AdminRoute>
+              <AdminProductEditPage/>
             </AdminRoute>
           }/>
         </Routes>

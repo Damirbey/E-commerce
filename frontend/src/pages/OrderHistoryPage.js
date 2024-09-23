@@ -13,6 +13,8 @@ const reducer = (state, action)=>{
             return {...state, loadingOrders:false, orders:action.payload};
         case 'ORDERS_FAIL':
             return {...state, loadingOrders:false, error:action.payload};
+        default: 
+            return state;
     }
 }
 

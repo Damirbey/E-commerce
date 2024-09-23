@@ -90,7 +90,7 @@ function SearchPage(){
     const changePage = ({ selected }) => {
         setPageNumber(selected);
     };
-    console.log("pag",pageCount)
+
     useEffect(() => {
         const fetchData = async () => {
             try {

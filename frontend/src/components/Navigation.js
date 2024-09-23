@@ -131,7 +131,7 @@ function Navigation(){
             <div className="userNav_section">    
                 <h3 className="userNav_section_heading">Admin</h3>
                 <div className="userNav_section_item" onClick={()=>onClickHandler('/dashboard')}>Dashboard</div>
-                <div className="userNav_section_item">Products</div>
+                <div className="userNav_section_item" onClick={()=>onClickHandler('/adminProducts')}>Products</div>
                 <div className="userNav_section_item">Orders</div>
                 <div className="userNav_section_item">Users</div>
             </div>
@@ -164,8 +164,8 @@ function Navigation(){
     
         <div className="category_menu" ref={categoryMenu}>
             <FaTimes className="category_menu_btn" onClick={toggleCategoryMenu}/>
-            {categories.map((category)=>(
-                <div className="category_menu_item" onClick={()=>onCategoryHandler(category)}>
+            {categories.map((category,index)=>(
+                <div key={index} className="category_menu_item" onClick={()=>onCategoryHandler(category)}>
                     {category}
                 </div>
             ))}

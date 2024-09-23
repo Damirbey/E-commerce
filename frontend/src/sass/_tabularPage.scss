@@ -1,6 +1,10 @@
 .tabularPage{
     grid-column: center-start / center-end;
     margin:2rem 0;
+    &_heading{
+        display: flex;
+        justify-content: space-between;
+    }
 }
 .table-container {
     width: 100%;
