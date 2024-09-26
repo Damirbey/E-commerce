@@ -132,8 +132,8 @@ function Navigation(){
                 <h3 className="userNav_section_heading">Admin</h3>
                 <div className="userNav_section_item" onClick={()=>onClickHandler('/dashboard')}>Dashboard</div>
                 <div className="userNav_section_item" onClick={()=>onClickHandler('/adminProducts')}>Products</div>
-                <div className="userNav_section_item">Orders</div>
-                <div className="userNav_section_item">Users</div>
+                <div className="userNav_section_item" onClick={()=>onClickHandler('/adminOrders')}>Orders</div>
+                <div className="userNav_section_item" onClick={()=>onClickHandler('/adminUsers')}>Users</div>
             </div>
             }
         </div>

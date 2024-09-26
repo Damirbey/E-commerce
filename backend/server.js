@@ -5,6 +5,7 @@ import seedRouter from "./routes/seedRouter.js";
 import productRouter from "./routes/productRouter.js";
 import userRouter from "./routes/userRoutes.js";
 import orderRouter from "./routes/orderRouter.js";
+import uploadRouter from "./routes/uploadRouter.js";
 import path from "path";
 
 
@@ -21,6 +22,7 @@ mongoose.connect(process.env.MONGO_DB_URI).then(()=>{
     console.log("error is ", error.message);
 });
 
+app.use('/api/upload',uploadRouter)
 app.use('/api/seed', seedRouter);
 app.use('/api/getProducts', productRouter);
 app.use('/api/users', userRouter);

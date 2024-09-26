@@ -794,6 +794,7 @@ a:visited {
   flex-direction: column;
   justify-content: space-between;
   gap: 1.5rem;
+  /* Checkbox styling */
 }
 .form_input {
   padding: 1.5rem 2rem;
@@ -812,6 +813,20 @@ a:visited {
   color: rgb(11, 11, 248);
   cursor: pointer;
   text-decoration: underline;
+}
+.form_checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Space between label and checkbox */
+}
+.form_checkbox {
+  width: 1.6rem;
+  height: 1.6rem;
+  cursor: pointer;
+}
+.form_checkbox-label {
+  font-size: 1.6rem;
+  cursor: pointer;
 }
 
 .shippingPage {

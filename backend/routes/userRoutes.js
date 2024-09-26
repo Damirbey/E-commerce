@@ -2,9 +2,57 @@ import bcrypt from 'bcryptjs';
 import expressAsyncHandler from 'express-async-handler';
 import express from 'express';
 import User from '../models/usersModel.js';
-import { generateToken, isAuth } from '../utils.js';
+import { generateToken, isAdmin, isAuth } from '../utils.js';
 
 const userRouter = express.Router();
+
+
+userRouter.get('/',isAuth, isAdmin,
+    expressAsyncHandler(async (req,res)=>{
+    const users = await User.find({});
+    res.send(users);
+    })
+);
+
+
+userRouter.get('/:id',isAuth, isAdmin,
+    expressAsyncHandler(async (req,res)=>{
+        const user = await User.findById(req.params.id);
+        if(user){
+            res.send(user);
+        }else{
+            res.status(404).send({message:"User not found."})
+        }
+    })
+);
+
+
+userRouter.delete('/:id',isAuth, isAdmin,
+    expressAsyncHandler(async (req,res)=>{
+        const user = await User.findByIdAndDelete(req.params.id);
+        if(user){
+            res.send({message:"User deleted successfully."});
+        }else{
+            res.status(404).send({message:"Something is off."});
+        }
+    })
+);
+
+userRouter.put('/:id',isAuth, isAdmin,
+    expressAsyncHandler(async (req,res)=>{
+        const user = await User.findById(req.params.id);
+        if(user){
+            user.name = req.body.name || user.name;
+            user.email = req.body.email || user.email;
+            user.isAdmin = Boolean(req.body.isAdmin);
+            const updatedUser = await user.save();
+            res.send({message:"User updated successfully."});
+        }else{
+            res.status(404).send({message:"Something is off."});
+        }
+    })
+);
+
 
 userRouter.post('/signIn', expressAsyncHandler(async (req,res)=>{
     const user = await User.findOne({email:req.body.email});
@@ -24,6 +72,8 @@ userRouter.post('/signIn', expressAsyncHandler(async (req,res)=>{
     res.status(401).send({message:'Invalid Email or Password'});
     })
 );
+
+
 userRouter.post('/signUp', expressAsyncHandler(async (req,res)=>{
         const newUser = new User({
             name:req.body.name,
@@ -40,6 +90,8 @@ userRouter.post('/signUp', expressAsyncHandler(async (req,res)=>{
         });      
     })
 );
+
+
 userRouter.put('/updateProfile', isAuth, expressAsyncHandler(async (req,res)=>{
     const user = await User.findById(req.user._id);
 
@@ -62,7 +114,6 @@ userRouter.put('/updateProfile', isAuth, expressAsyncHandler(async (req,res)=>{
     } 
 })
 );
-
 
 
 export default userRouter;

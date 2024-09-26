@@ -34,4 +34,22 @@
         cursor: pointer;
         text-decoration: underline;
     }
+
+    /* Checkbox styling */
+    &_checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 1rem; /* Space between label and checkbox */
+    }
+
+    &_checkbox {
+        width: 1.6rem;
+        height: 1.6rem;
+        cursor: pointer;
+    }
+
+    &_checkbox-label {
+        font-size: 1.6rem;
+        cursor: pointer;
+    }
 }

@@ -20,12 +20,22 @@ const reducer = (state,action)=>{
             return {...state, loadingUpdate: false};
         case 'UPDATE_FAIL':
             return {...state, loadingUpdate: false, error:action.payload};
+        case 'UPLOAD_REQUEST':
+            return { ...state, loadingUpload: true, errorUpload: '' };
+        case 'UPLOAD_SUCCESS':
+            return {
+                ...state,
+                loadingUpload: false,
+                errorUpload: '',
+            };
+        case 'UPLOAD_FAIL':
+            return { ...state, loadingUpload: false, errorUpload: action.payload };
         default:
             return state;
     }
 }
 function AdminProductEditPage(){
-    const [{ loading, product, error }, dispatch] = useReducer(reducer, {
+    const [{ loading,loadingUpdate, loadingUpload, product, error }, dispatch] = useReducer(reducer, {
         loading: true,
         error: ''
     });
@@ -35,11 +45,32 @@ function AdminProductEditPage(){
     const {userInfo} = state;
     const navigate = useNavigate(); 
 
+    const uploadFileHandler = async (e) => {
+        const file = e.target.files[0];
+        const bodyFormData = new FormData();
+        bodyFormData.append('file', file);
+        try {
+          dispatch({ type: 'UPLOAD_REQUEST' });
+          const { data } = await axios.post('/api/upload', bodyFormData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              authorization: `Bearer ${userInfo.token}`,
+            },
+          });
+          dispatch({ type: 'UPLOAD_SUCCESS' });
+          toast.success('Image uploaded successfully');
+          setImage(data.secure_url);
+        } catch (err) {
+          toast.error(getError(err));
+          dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
+        }
+    };
+
     const onSubmitHandler = async (e) =>{
         e.preventDefault();
         try{
             dispatch({type:"UPDATE_REQUEST"});
-            const {data} = await axios.put(`/api/getProducts/${productId}`,
+            await axios.put(`/api/getProducts/${productId}`,
                 {
                     id: productId,
                     name,
@@ -56,6 +87,7 @@ function AdminProductEditPage(){
                 }
             );
             toast.success("Product Updated Successfully");
+            navigate('/adminProducts');
         }catch(err){
             dispatch({type:"UPDATE_FAIL"});
             toast.error(getError(err));
@@ -115,6 +147,9 @@ function AdminProductEditPage(){
 
                 <p className="form_label">Image File</p>
                 <input type="text" name="image" className="form_input" value={image} onChange={(e)=>setImage(e.target.value)}/>
+
+                <p className="form_label">Upload File</p>
+                <input type="file" name="image" className="form_input" onChange={uploadFileHandler}/>
 
                 <p className="form_label">Category</p>
                 <input type="text" name="category" className="form_input" value={category} onChange={(e)=>setCategory(e.target.value)}/>

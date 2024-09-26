@@ -23,6 +23,14 @@ const reducer = (state, action)=>{
             return {...state, loadingCreate:false};
         case 'CREATE_FAIL':
             return {...state, loadingCreate:false};
+        case 'DELETE_REQUEST':
+            return {...state, loadingDelete:true, successDelete:false};
+        case 'DELETE_SUCCESS':
+            return {...state, loadingDelete:false, successDelete:true};
+        case 'DELETE_FAIL':
+            return {...state, loadingDelete:false, successDelete:false};
+        case 'DELETE_RESET':
+            return {...state, loadingDelete:false, successDelete:false};
         default:
             return state;
     }
@@ -32,7 +40,7 @@ function AdminProductsPage(){
     const {state, dispatch:ctxDispatch} = useContext(Store);
     const {userInfo} = state;
     const navigate = useNavigate();
-    const [{loadingProducts,products,loadingCreate}, dispatch] = useReducer(logger(reducer),{
+    const [{loadingProducts,products,loadingCreate, loadingDelete, successDelete}, dispatch] = useReducer(logger(reducer),{
         loadingProducts:true,
         loadingCreate:true,
         products:[]
@@ -75,6 +83,28 @@ function AdminProductsPage(){
     }
 
 
+    const onDeleteProduct = async (product) =>{
+        if(window.confirm("Are you sure, you want to delete Product?")){
+            try{
+                dispatch({type:'DELETE_REQUEST'});
+                await axios.delete(`/api/getProducts/${product._id}`,{
+                    headers: { Authorization: `Bearer ${userInfo.token}` }
+                });
+                dispatch({type:'DELETE_SUCCESS'});
+                toast.success("Product Deleted Successfully!");
+
+                 // Check if the current page is empty after the deletion
+                if (displayProducts.length === 1 && pageNumber > 0) {
+                    // If it was the last product on the page, go to the previous page
+                    setPageNumber(pageNumber - 1);
+                }
+            }catch(err){
+                dispatch({type:'DELETE_FAIL'});
+                toast.error(getError(err));
+            }
+        }
+    }
+
     useEffect(()=>{
 
         const fetchProducts = async()=>{
@@ -90,8 +120,11 @@ function AdminProductsPage(){
                 dispatch({type:'PRODUCTS_FAIL', payload:getError(error)})
             }
         }
+        if(successDelete){
+            dispatch({type:'DELETE_RESET'});
+        }
         fetchProducts();
-    },[userInfo, navigate]);
+    },[userInfo, navigate, successDelete]);
 
     return (<div className="tabularPage">
         <Helmet>
@@ -127,7 +160,7 @@ function AdminProductsPage(){
                             <td>{product.category}</td>
                             <td>{product.brand}</td>
                             <td>
-                                <button className="btn" onClick={()=>navigate(`/adminProductEdit/${product._id}`)}> Edit</button>  <button className="btn btn-disabled" > Delete</button>
+                                <button className="btn" onClick={()=>navigate(`/adminProductEdit/${product._id}`)}> Edit</button>  <button className="btn btn-disabled" onClick={()=>onDeleteProduct(product)}> Delete</button>
                             </td>
                         </tr>
                        ))}
@@ -147,6 +180,7 @@ function AdminProductsPage(){
             nextLinkClassName={'nextBttn'}
             disabledClassName={'paginationDisabled'}
             activeClassName={'paginationActive'}
+            forcePage={pageNumber}
         />
     </div>
     )
