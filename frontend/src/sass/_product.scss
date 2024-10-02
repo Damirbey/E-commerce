@@ -2,8 +2,12 @@
     grid-column: center-start /  center-end;
     padding:2rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(20rem, max-content));
-    grid-gap:8rem;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, max-content));
+    grid-template-rows: .5fr 1fr;
+    grid-gap:5rem;
+    @media only screen and (max-width:$bp-large){
+        grid-template-rows: repeat(4, min-content);
+    }
     &>*{
         cursor: pointer;
     }
@@ -39,5 +43,34 @@
             grid-column: 1/-1;
         }
     }
+    &_reviews{
+        grid-column: 1/-1;
+        // width: 1fr;
+    }
    
+}
+
+.review-form{
+
+    form > *{
+        margin: 1rem 0;
+    }
+    form > select,textarea{
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.6rem;
+    }
+}
+.reviewBox{
+    font-size: 1.6rem;
+    margin: 1rem 0;
+    border: 1px solid $color-grey-light-4;
+    padding: 1rem;
+    border-radius: .5rem;
+    & > *{
+        margin: 0.5rem 0;
+    }
+    &_name{
+        font-weight: bold;
+    }
 }

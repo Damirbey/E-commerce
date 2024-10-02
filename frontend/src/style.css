@@ -659,8 +659,14 @@ a:visited {
   grid-column: center-start/center-end;
   padding: 2rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, max-content));
-  grid-gap: 8rem;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, max-content));
+  grid-template-rows: 0.5fr 1fr;
+  grid-gap: 5rem;
+}
+@media only screen and (max-width: 62.5em) {
+  .product-screen {
+    grid-template-rows: repeat(4, min-content);
+  }
 }
 .product-screen > * {
   cursor: pointer;
@@ -695,6 +701,32 @@ a:visited {
 }
 .product-screen_status_btn {
   grid-column: 1/-1;
+}
+.product-screen_reviews {
+  grid-column: 1/-1;
+}
+
+.review-form form > * {
+  margin: 1rem 0;
+}
+.review-form form > select, .review-form textarea {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.6rem;
+}
+
+.reviewBox {
+  font-size: 1.6rem;
+  margin: 1rem 0;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.reviewBox > * {
+  margin: 0.5rem 0;
+}
+.reviewBox_name {
+  font-weight: bold;
 }
 
 .cart {
