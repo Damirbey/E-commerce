@@ -15,7 +15,7 @@
     flex-direction: column;
     justify-content: space-between;
     gap:1.5rem;
-
+    
     &_input{
         padding:1.5rem 2rem;
         border: 1px solid $color-grey-light-4;
@@ -25,7 +25,23 @@
         &:focus{
             background-color: rgb(213, 234, 241);
         }
+
+        &_listgroup{
+            
+            margin:1rem auto;
+            display: flex;
+            justify-content: space-between;
+
+            & > span{
+                max-width: 300px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
     }
+    
     &_btn{
         align-self: flex-start;
     }

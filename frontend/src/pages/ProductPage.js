@@ -45,6 +45,7 @@ function ProductPage(){
     const {userInfo} = state;
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
+    const [selectedImage, setSelectedImage] = useState('');
 
     const navigate = useNavigate();
 
@@ -63,7 +64,7 @@ function ProductPage(){
 
     const addToCartHandler = async()=>{
         const {data} = await axios.get(`/api/getProducts/id/${product._id}`);
-        const existItem = cartItems.find((cartItem)=>cartItem._id == product._id);
+        const existItem = cartItems.find((cartItem)=>cartItem._id === product._id);
         const quantity = existItem ? existItem.quantity + 1 : 1;
         if(data.countInStock < quantity){
             window.alert("Sorry we are out of stock");
@@ -104,7 +105,7 @@ function ProductPage(){
             toast.error(getError(err));
         }
     }
-
+    console.log("Images ", product)
     return <div className="product-screen"> 
         <Helmet><title>{product.slug}</title></Helmet>    
         {
@@ -117,7 +118,7 @@ function ProductPage(){
             (<React.Fragment>
 
             
-                <img src={product.image} className="product-screen_image" alt={product.description}/>
+                <img src={selectedImage || product.image} className="product-screen_image" alt={product.description}/>
 
                 <div className="product-screen_info">
                     <h2>{product.name}</h2>
@@ -127,6 +128,13 @@ function ProductPage(){
                     <div className="product-screen_info_description">
                         <p>Description: </p>
                         <p>{product.description}</p>
+                    </div>
+                    <div className="product-screen_info_images">
+                        {
+                            [product.image, ...product.images].map((image)=>(
+                                <img src={image} className="" alt={product.description} onClick={()=>setSelectedImage(image)}/>
+                            ))
+                        }
                     </div>
                 </div>
 

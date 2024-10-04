@@ -28,6 +28,15 @@
         &>h2{
             font-size: 2.2rem;
         }
+        &_images{
+            & > img{
+                height: 100px;
+                width: 100px;
+                border: 1px solid #ccc;
+                margin: 0 1rem;
+            }
+            
+        }
     }
     &_status{
         font-size: 2rem;

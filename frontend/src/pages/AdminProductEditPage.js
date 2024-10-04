@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { getError } from "../utils";
 import axios from "axios";
 import { Store } from "../Store";
+import { FaWindowClose } from "react-icons/fa";
+
 
 const reducer = (state,action)=>{
     switch(action.type){
@@ -45,7 +47,7 @@ function AdminProductEditPage(){
     const {userInfo} = state;
     const navigate = useNavigate(); 
 
-    const uploadFileHandler = async (e) => {
+    const uploadFileHandler = async (e, forImages) => {
         const file = e.target.files[0];
         const bodyFormData = new FormData();
         bodyFormData.append('file', file);
@@ -58,13 +60,22 @@ function AdminProductEditPage(){
             },
           });
           dispatch({ type: 'UPLOAD_SUCCESS' });
-          toast.success('Image uploaded successfully');
-          setImage(data.secure_url);
+          if (forImages) {
+            setImages([...images, data.secure_url]);
+          } else {
+            setImage(data.secure_url);
+          }
+          toast.success('Image uploaded successfully. click Update to apply it');
         } catch (err) {
           toast.error(getError(err));
           dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
         }
     };
+
+    const deleteFileHandler = async(filename,f)=>{
+        setImages(images.filter((x) => x !== filename));
+        toast.success('Image removed successfully. click Update to apply it');
+    }
 
     const onSubmitHandler = async (e) =>{
         e.preventDefault();
@@ -79,6 +90,7 @@ function AdminProductEditPage(){
                     countInStock,
                     description,
                     image,
+                    images,
                     brand,
                     slug
                 },
@@ -105,6 +117,7 @@ function AdminProductEditPage(){
                 setCountInStock(data.countInStock);
                 setDescription(data.description);
                 setImage(data.image);
+                setImages(data.images);
                 setBrand(data.brand);
                 setSlug(data.slug);
                 dispatch({type:"FETCH_SUCCESS"})
@@ -125,6 +138,7 @@ function AdminProductEditPage(){
     const [countInStock, setCountInStock] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState('');
+    const [images, setImages] = useState('');
 
     return(
         
@@ -135,6 +149,7 @@ function AdminProductEditPage(){
                 </title>
             </Helmet>
             <h1 className="heading-1 bold-text">Edit Product {productId}</h1>
+
             <form className="form" onSubmit={onSubmitHandler}>  
                 <p className="form_label">Name</p>
                 <input type="text" name="name" className="form_input" value={name} onChange={(e)=>setName(e.target.value)}/>
@@ -148,8 +163,21 @@ function AdminProductEditPage(){
                 <p className="form_label">Image File</p>
                 <input type="text" name="image" className="form_input" value={image} onChange={(e)=>setImage(e.target.value)}/>
 
-                <p className="form_label">Upload File</p>
+                <p className="form_label">Upload Image</p>
                 <input type="file" name="image" className="form_input" onChange={uploadFileHandler}/>
+                <div>
+                    {images.length > 0 && <p>Additional Images</p>
+                    }    
+                    {images && images.map(image=>(
+                        <div className="form_input_listgroup">
+                            <span>{image} </span>
+                            <FaWindowClose onClick={()=>deleteFileHandler(image)}/>
+                        </div>
+                        
+                    ))}
+                </div>
+                <p className="form_label">Upload Additional Image</p>
+                <input type="file" name="image" className="form_input" onChange={(e)=>uploadFileHandler(e,true)}/>
 
                 <p className="form_label">Category</p>
                 <input type="text" name="category" className="form_input" value={category} onChange={(e)=>setCategory(e.target.value)}/>
