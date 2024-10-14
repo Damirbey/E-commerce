@@ -5,7 +5,7 @@ export const baseURL = ()=>
   ? process.env.BASE_URL
   : process.env.NODE_ENV !== 'production'
   ? 'http://localhost:3000'
-  : process.env.PRODUCTION_DOMAIN
+  : 'https://damirkhonyodgorov.onrender.com/'
 
 
 export const generateToken = (user) => {
