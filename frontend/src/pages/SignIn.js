@@ -50,6 +50,7 @@ function SignIn(){
             <input type="password" name="password" className="form_input" onChange={(e)=>setPassword(e.target.value)}/>
             <button type="submit" className="btn form_btn">Sign In</button>
             <p className="form_link">New customer? <Link to='/signUp' >Create your account</Link></p>
+            <p className="form_link">Forgot Password? <Link to='/forgotPassword'>Reset Password</Link></p>
         </form>
     </div>
     )

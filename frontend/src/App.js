@@ -24,6 +24,8 @@ import AdminProductEditPage from './pages/AdminProductEditPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
 import AdminUsersPage from './pages/AdminUsersPage';
 import AdminUserEditPage from './pages/AdminUserEditPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 function App() {
   const outerModal = useRef();
@@ -39,6 +41,8 @@ function App() {
           <Route path="/cart" element={<CartPage/>}/>
           <Route path="/signIn" element={<SignIn/>}/>
           <Route path="/signUp" element={<SignUp/>}/>
+          <Route path="/forgotPassword" element={<ForgotPasswordPage/>}/>
+          <Route path="/resetPassword/:token" element={<ResetPasswordPage/>}/>
           <Route path="/shipping" element={
             <ProtectedRoute>
               <ShippingPage/>

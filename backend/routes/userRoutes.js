@@ -2,7 +2,9 @@ import bcrypt from 'bcryptjs';
 import expressAsyncHandler from 'express-async-handler';
 import express from 'express';
 import User from '../models/usersModel.js';
-import { generateToken, isAdmin, isAuth } from '../utils.js';
+import { generateToken, isAdmin, isAuth, baseURL } from '../utils.js';
+import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 
 const userRouter = express.Router();
 
@@ -37,6 +39,7 @@ userRouter.delete('/:id',isAuth, isAdmin,
         }
     })
 );
+
 
 userRouter.put('/:id',isAuth, isAdmin,
     expressAsyncHandler(async (req,res)=>{
@@ -90,6 +93,70 @@ userRouter.post('/signUp', expressAsyncHandler(async (req,res)=>{
         });      
     })
 );
+
+
+userRouter.post('/forgot-password', expressAsyncHandler(async (req,res)=>{
+        const user = await User.findOne({email:req.body.email});
+        if(user){
+            const token = jwt.sign({_id:user._id}, process.env.JWT_SECRET, {
+                expiresIn:'3h',
+            });
+            user.resetToken = token;
+            await user.save();
+
+            // Create a transporter object with Gmail
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                user: process.env.GMAIL_EMAIL, // Your Gmail email address
+                pass: process.env.GMAIL_PASSWORD        // Your Gmail password or app-specific password
+                }
+            });
+            
+            // Define email options with a URL
+            let mailOptions = {
+                from: process.env.GMAIL_EMAIL,                // Sender address
+                to: req.body.email,                 // Recipient
+                subject: 'Amazona Password Reset',             // Subject
+                html: `<p>Please use the following link to reset your password: <a href="${baseURL()}/resetPassword/${token}">Reset Password</a>.</p>`
+            };
+            
+            // Send email
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                return console.log(error);
+                }
+                res.send({message:"Password reset link was sent to your email"})
+            });
+        }
+
+    })
+);
+
+userRouter.post('/reset-password', expressAsyncHandler(async (req,res)=>{
+
+    jwt.verify(
+        req.body.token,
+        process.env.JWT_SECRET,
+        async(err,decode) => {
+            if(err){
+                res.status(404).send({message:'Invalid Token!'});
+            }else{
+                const user = await User.findOne({resetToken:req.body.token});
+                if(user){
+                    if(req.body.password){
+                        user.password = bcrypt.hashSync(req.body.password, 8);
+                        await user.save();
+                        res.send({message:'Password reset is successful'});
+                    }
+                }else{
+                    res.status(404).send({message:'User not found!'});
+                }
+            }
+        }
+    )
+    
+}));
 
 
 userRouter.put('/updateProfile', isAuth, expressAsyncHandler(async (req,res)=>{
